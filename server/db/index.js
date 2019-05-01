@@ -7,7 +7,7 @@ const Task = require("./Task");
 // This file sets up the associations between Lists and Tasks within the database
 
 Task.belongsTo(List);
-List.hasMany(Task);
+List.hasMany(Task, { onDelete: "cascade" });
 
 module.exports = {
   db,

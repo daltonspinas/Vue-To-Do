@@ -9,11 +9,6 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: "/",
-      name: "Lists",
-      component: Lists,
-    },
-    {
       path: "/lists",
       name: "Lists",
       component: Lists,

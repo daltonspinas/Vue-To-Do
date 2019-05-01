@@ -11,4 +11,7 @@ export default {
     const listBody = { name };
     return Api().post(`lists`, listBody);
   },
+  deleteList(id) {
+    return Api().delete(`lists/${id}`);
+  },
 };
