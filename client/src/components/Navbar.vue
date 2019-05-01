@@ -30,6 +30,7 @@
 
 <script>
 import ListService from "../../services/ListService.js";
+import { EventBus } from "../eventbus.js";
 export default {
   name: "navbar",
   data() {
@@ -37,6 +38,9 @@ export default {
   },
   mounted() {
     this.getLists();
+    EventBus.$on("update", () => {
+      this.getLists();
+    });
   },
   methods: {
     async getLists() {

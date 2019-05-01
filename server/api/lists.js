@@ -2,6 +2,23 @@ const listRouter = require("express").Router();
 const List = require("../db/List");
 const Task = require("../db/Task");
 
+listRouter.put("/", async (req, res, next) => {
+  try {
+    const list = req.body;
+    const id = list.id;
+    console.log(id);
+    const updatedList = await List.update(
+      {
+        name: list.name,
+      },
+      { where: { id } }
+    );
+    res.json(updatedList);
+  } catch (err) {
+    next(err);
+  }
+});
+
 listRouter.post("/", async (req, res, next) => {
   try {
     console.log(req.body);
@@ -31,6 +48,7 @@ listRouter.get("/", async (req, res, next) => {
   try {
     const lists = await List.findAll({
       include: [Task],
+      order: ["id"],
     });
     res.json(lists);
   } catch (err) {

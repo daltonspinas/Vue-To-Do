@@ -46,7 +46,7 @@ export default {
       const response = await ListService.createList(name);
       const listId = response.data.id;
       await this.makeNewTasks(listId);
-      await this.sendToSingleList(listId);
+      await this.sendToLists();
     },
     makeNewTasks(listId) {
       // procedurally set the foreign keys and create the tasks
@@ -57,7 +57,7 @@ export default {
         await TaskService.createTask(taskObj);
       });
     },
-    sendToSingleList(id) {
+    sendToLists(id) {
       this.$router.push({ path: `/lists` });
     }
   }

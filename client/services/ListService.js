@@ -14,4 +14,7 @@ export default {
   deleteList(id) {
     return Api().delete(`lists/${id}`);
   },
+  editList(list) {
+    return Api().put(`lists/`, list);
+  },
 };

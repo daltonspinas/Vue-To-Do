@@ -3,8 +3,8 @@
   <div>
     <div class="lists"></div>
     <b-card-group deck>
-      <div v-for="list in lists" v-bind:key="list.id" v-on:click="sendToSingleList(list.id)">
-        <singleList :id="list.id" @update="getLists"></singleList>
+      <div v-for="list in lists" v-bind:key="list.id">
+        <singleList :id="list.id"></singleList>
       </div>
     </b-card-group>
   </div>
@@ -13,6 +13,7 @@
 <script>
 import ListService from "../../services/ListService.js";
 import OneList from "./OneList";
+import { EventBus } from "../eventbus.js";
 export default {
   name: "lists",
   components: { singleList: OneList },
@@ -21,14 +22,14 @@ export default {
   },
   mounted() {
     this.getLists();
+    EventBus.$on("update", () => {
+      this.getLists();
+    });
   },
   methods: {
     async getLists() {
       const response = await ListService.fetchLists();
       this.lists = response.data;
-    },
-    sendToSingleList(id) {
-      //  this.$router.push({ path: `/lists/${id}` });
     }
   }
 };

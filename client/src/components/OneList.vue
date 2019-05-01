@@ -4,17 +4,20 @@
       <b-card-text>
         <ul>
           <li v-for="task in list.tasks" v-bind:key="task.id">
-            <span v-bind:class="{ complete: task.completed }">{{task.name}}</span>
+            <span v-bind:class="{ complete: task.completed } " class="task-name">{{task.name}}</span>
+
             <b-button
-              class="checked-task"
+              class="checked-task floated"
               variant="success"
               v-on:click="switchComplete(task)"
             >&#10003;</b-button>
-            <b-button class="kill-task" variant="danger" v-on:click="deleteTask(task.id)">X</b-button>
+            <b-button class="kill-task floated" variant="danger" v-on:click="deleteTask(task.id)">X</b-button>
           </li>
         </ul>
       </b-card-text>
       <b-button variant="danger" v-on:click="deleteList(list.id)">Destroy List</b-button>
+
+      <b-button variant="secondary" v-on:click="sendToEdit(list.id)">Edit List</b-button>
     </b-card>
   </div>
 </template>
@@ -22,6 +25,7 @@
 <script>
 import ListService from "../../services/ListService.js";
 import TaskService from "../../services/TaskService.js";
+import { EventBus } from "../eventbus.js";
 export default {
   name: "one-list",
   props: ["id"],
@@ -51,6 +55,9 @@ export default {
       const response = await TaskService.updateTask(taskObj);
       this.getOneList();
     },
+    sendToEdit(id) {
+      this.$router.push({ path: `/edit-list/${id}` });
+    },
     switchComplete(taskObj) {
       taskObj.completed = !taskObj.completed;
       this.editTask(taskObj);
@@ -65,9 +72,8 @@ export default {
       if (this.$route.params.id) {
         this.$router.push({ path: `/lists` });
         // emit back to the parent element to reload the lists, since this one is now deleted
-      } else {
-        this.$emit("update");
       }
+      EventBus.$emit("update");
     }
   },
   watch: {
@@ -89,6 +95,11 @@ li {
 
 .kill-task {
   margin: 0, 10px, 0, auto;
+  float: right;
+}
+
+.task-name {
+  text-align: start;
 }
 
 .complete {
